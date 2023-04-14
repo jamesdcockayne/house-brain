@@ -4,7 +4,7 @@ Manages hot water heating and solar generation.
 
 # Hardware
 
-* epaper display
+* epaper display https://www.waveshare.com/wiki/E-Paper_Driver_HAT
 * 5 tank temp sensors (from top to bottom)
 * gas heating inlet and outlet sensor
 * cold water tank temp sensor
