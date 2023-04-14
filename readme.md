@@ -1,8 +1,8 @@
 [![Docker Image CI](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml/badge.svg)](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml)
 
-# Heat and cool
+# House Brain
 
-Manages hot water heating and solar generation.
+Manages hot water heating, solar PV generation, and battery management via a Sofar ME3000 inverter.
 
 # Hardware
 
