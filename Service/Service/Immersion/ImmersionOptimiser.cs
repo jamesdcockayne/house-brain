@@ -59,6 +59,5 @@ internal class ImmersionOptimiser
         _immersionRelay.TopImmersionEnabled = !isTopElement;
 
         await _wait.LongWait();
-        return;
     }
 }
