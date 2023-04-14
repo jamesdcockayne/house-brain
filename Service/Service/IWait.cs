@@ -3,4 +3,5 @@
 public interface IWait
 {
     Task LongWait();
+    Task ShortWait();
 }
