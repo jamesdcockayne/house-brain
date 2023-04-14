@@ -1,3 +1,5 @@
+[![Docker Image CI](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml/badge.svg)](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml)
+
 # Heat and cool
 
 Manages hot water heating and solar generation.
