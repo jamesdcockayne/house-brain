@@ -13,14 +13,6 @@ internal class ImmersionOptimiser
         _wait = wait;
     }
 
-    public async Task LoopAsync()
-    {
-        while (true)
-        {
-            await OptimiseAsync();
-        }
-    }
-
     public async Task OptimiseAsync()
     {
         // current flowing top        - leave it, and wait
