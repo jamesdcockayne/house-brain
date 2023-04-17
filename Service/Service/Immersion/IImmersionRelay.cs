@@ -2,5 +2,5 @@
 
 public interface IImmersionRelay
 {
-    public bool TopImmersionEnabled { get; set; }
+    bool TopImmersionEnabled { get; set; }
 }

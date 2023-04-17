@@ -34,7 +34,9 @@ namespace ServiceTests
 
             var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
             relayMock.SetupSet(mock => mock.TopImmersionEnabled).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
             relayMock.SetupGet(mock => mock.TopImmersionEnabled).Returns(() => args.LastOrDefault(defaultValue: true)); // TopImmersionEnabled should be false by default
 
             var waiterMock = GetMockedWait();
@@ -67,7 +69,9 @@ namespace ServiceTests
 
             var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
             relayMock.SetupSet(mock => mock.TopImmersionEnabled).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
             relayMock.SetupGet(mock => mock.TopImmersionEnabled).Returns(() => args.LastOrDefault(defaultValue: true)); // TopImmersionEnabled should be false by default
 
             var waiterMock = new Mock<IWait>();
@@ -103,7 +107,9 @@ namespace ServiceTests
 
             var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
             relayMock.SetupSet(mock => mock.TopImmersionEnabled).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
             relayMock.SetupGet(mock => mock.TopImmersionEnabled).Returns(() => args.LastOrDefault(defaultValue: false)); // TopImmersionEnabled should be false by default
 
             var waiterMock = new Mock<IWait>();
@@ -139,7 +145,9 @@ namespace ServiceTests
 
             var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
             relayMock.SetupSet(mock => mock.TopImmersionEnabled).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
             relayMock.SetupGet(mock => mock.TopImmersionEnabled).Returns(() => args.LastOrDefault(defaultValue: false)); // TopImmersionEnabled should be false by default
 
             var waiterMock = new Mock<IWait>();

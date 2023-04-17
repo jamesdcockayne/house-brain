@@ -20,7 +20,9 @@ public class GasHeatStrategyTests
 
         var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
         relayMock.SetupSet(mock => mock.CallForHeat).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
         relayMock.SetupGet(mock => mock.CallForHeat).Returns(() => args.LastOrDefault(defaultValue: false));
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
@@ -45,7 +47,9 @@ public class GasHeatStrategyTests
 
         var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
         relayMock.SetupSet(mock => mock.CallForHeat).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
         relayMock.SetupGet(mock => mock.CallForHeat).Returns(() => args.LastOrDefault(defaultValue: false));
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
@@ -76,7 +80,9 @@ public class GasHeatStrategyTests
 
         var args = new List<bool>();
 
+#pragma warning disable CS0618 // Type or member is obsolete
         relayMock.SetupSet(mock => mock.CallForHeat).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
         relayMock.SetupGet(mock => mock.CallForHeat).Returns(() => args.LastOrDefault(defaultValue: false));
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();

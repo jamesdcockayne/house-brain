@@ -3,6 +3,7 @@
 public class WiringPinOptions
 {
     public int ImmersionRelayPinNumber { get; set; }
+    public int GasCallForHeatRelayPinNumber { get; set; }
 }
 
 // epaper hat
