@@ -15,7 +15,7 @@ namespace ServiceTests
         {
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWait()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
 
             return waiterMock;
         }
@@ -53,7 +53,7 @@ namespace ServiceTests
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { false });
 
-            waiterMock.Verify(waiter => waiter.LongWait(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWait()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -88,7 +88,7 @@ namespace ServiceTests
 
             CollectionAssert.AreEqual(expected: args, actual: new bool[] { });
 
-            waiterMock.Verify(waiter => waiter.LongWait(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
             
         }
 
@@ -114,7 +114,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWait()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -124,7 +124,7 @@ namespace ServiceTests
 
             await optimiser.OptimiseAsync();
 
-            waiterMock.Verify(waiter => waiter.LongWait(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { true });
         }
@@ -152,7 +152,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWait()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -162,7 +162,7 @@ namespace ServiceTests
 
             await optimiser.OptimiseAsync();
             
-            waiterMock.Verify(waiter => waiter.LongWait(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { true, false });
         }

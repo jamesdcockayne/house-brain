@@ -26,7 +26,7 @@ internal class ImmersionOptimiser
         {
             if (currentDetected)
             {
-                await _wait.LongWait();
+                await _wait.LongWaitAsync();
             }
             else
             {
@@ -41,7 +41,7 @@ internal class ImmersionOptimiser
             }
             else
             {
-                await _wait.LongWait();
+                await _wait.LongWaitAsync();
             }
         } 
     }
@@ -52,12 +52,12 @@ internal class ImmersionOptimiser
 
         if (_currentSensor.CurrentIsDetected)
         {
-            await _wait.LongWait();
+            await _wait.LongWaitAsync();
             return;
         }
 
         _immersionRelay.TopImmersionEnabled = !isTopElement;
 
-        await _wait.LongWait();
+        await _wait.LongWaitAsync();
     }
 }

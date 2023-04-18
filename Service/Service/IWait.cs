@@ -2,6 +2,6 @@
 
 public interface IWait
 {
-    Task LongWait();
-    Task ShortWait();
+    Task LongWaitAsync();
+    Task ShortWaitAsync();
 }
