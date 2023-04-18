@@ -11,9 +11,6 @@ public class TemperatureSensorReader : ICylinderTemperatureSensor, Gas.IGasInlet
 
     public TemperatureSensorReader(IOptions<TemperatureSensorOptions> options)
     {
-        if (options.Value.ColdWaterSensorId == null)
-            throw new Exception();
-
         _options = options.Value;
     }
 

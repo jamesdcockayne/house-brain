@@ -2,5 +2,5 @@
 
 internal class CurrentSensor : ICurrentSensor
 {
-    public bool CurrentIsDetected => throw new NotImplementedException();
+    public bool CurrentIsDetected => false; /// for now
 }

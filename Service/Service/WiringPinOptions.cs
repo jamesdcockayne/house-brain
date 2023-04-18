@@ -2,7 +2,10 @@
 
 public class WiringPinOptions
 {
+    [GpioHeaderPin]
     public int ImmersionRelayPinNumber { get; set; }
+
+    [GpioHeaderPin]
     public int GasCallForHeatRelayPinNumber { get; set; }
 }
 

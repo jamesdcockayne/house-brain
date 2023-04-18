@@ -24,7 +24,7 @@ internal class GasHeatSchedulerService : BackgroundService
         {
             while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                await _gasHeatStrategy.GasHeatAsync(_gasHeatingOptions.TargetTemperature, stoppingToken);
+                await _gasHeatStrategy.GasHeatAsync((decimal)_gasHeatingOptions.TargetTemperature, stoppingToken);
             }
         }
         catch (OperationCanceledException)
