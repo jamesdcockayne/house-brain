@@ -27,7 +27,7 @@ public class GasHeatStrategyTests
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
 
-        sensorMock.SetupGet(mock => mock.Sensors).Returns(new decimal[] { 90, 90, 90, 90, 90 });
+        sensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 90, 90, 90, 90, 90 });
 
         var waiterMock = new Mock<IWait>();
 
@@ -54,7 +54,7 @@ public class GasHeatStrategyTests
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
 
-        sensorMock.SetupGet(mock => mock.Sensors).Returns(new decimal[] { 30, 30, 30, 30, 30 });
+        sensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 30, 30, 30, 30, 30 });
 
         var waiterMock = new Mock<IWait>();
 
@@ -87,7 +87,7 @@ public class GasHeatStrategyTests
 
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
 
-        sensorMock.SetupGet(mock => mock.Sensors).Returns(new decimal[] { 30, 30, 30, 30, 30 });
+        sensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 30, 30, 30, 30, 30 });
 
         var waiterMock = new Mock<IWait>();
 
@@ -107,7 +107,7 @@ public class GasHeatStrategyTests
         CollectionAssert.AreEqual(expected: args, actual: new[] { true });
 
         // Now make the tank hot, and wait for the task to finish. The call for heat should be unset.
-        sensorMock.SetupGet(mock => mock.Sensors).Returns(new decimal[] { 90, 90, 90, 90, 90 });
+        sensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 90, 90, 90, 90, 90 });
 
         await gasHeatTask;
 

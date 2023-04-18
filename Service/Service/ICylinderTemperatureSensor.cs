@@ -2,5 +2,5 @@
 
 public interface ICylinderTemperatureSensor
 {
-    decimal[] Sensors { get; } // top to bottom
+    Task<decimal[]> GetSensorsAsync(); // top to bottom
 }

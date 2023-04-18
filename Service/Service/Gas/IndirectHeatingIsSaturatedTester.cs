@@ -9,12 +9,12 @@ public class IndirectHeatingIsSaturatedTester
         _gasSensor = gasSensor;
     }
 
-    public bool GasHeatingInletAndOutletTempsAreSimilarAndHot()
+    public async Task<bool> GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()
     {
-        if (IsHot(_gasSensor.InletCelsius) == false)
+        if (IsHot(await _gasSensor.GetFlowCelsiusAsync()) == false)
             return false;
 
-        decimal delta = _gasSensor.InletCelsius - _gasSensor.OutletCelsius;
+        decimal delta = await _gasSensor.GetFlowCelsiusAsync() - await _gasSensor.GetReturnCelsiusAsync();
 
         return Math.Abs(delta) < 5M;
     }

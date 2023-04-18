@@ -4,4 +4,5 @@ public class CapacityCalculatorOptions
 {
     public decimal TargetOutletTemperature { get; set; }
     public decimal TankCapacityLiters { get; set; }
+    public int TankSensorCount { get; set; }
 }

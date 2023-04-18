@@ -1,40 +1,50 @@
 ﻿using Microsoft.Extensions.Options;
 
-namespace Service.DhwCapacity
+namespace Service.DhwCapacity;
+
+public class CapacityCalculator
 {
-    public class CapacityCalculator
+    private readonly ICylinderTemperatureSensor _cylinderTemperatureSensors;
+    private readonly IColdWaterInletSensor _coldWaterInletSensor;
+    private readonly CapacityCalculatorOptions _calculatorOptions;
+    private readonly WaterMixerCalculator _waterMixerCalculator;
+    private readonly decimal _hotWaterPartitionVolumeLiters;
+
+    public CapacityCalculator(
+        ICylinderTemperatureSensor cylinderTemperatureSensors, 
+        IColdWaterInletSensor coldWaterInletSensor, 
+        IOptions<CapacityCalculatorOptions> options,
+        WaterMixerCalculator waterMixerCalculator)
     {
-        private readonly ICylinderTemperatureSensor _cylinderTemperatureSensors;
-        private readonly IColdWaterInletSensor _coldWaterInletSensor;
-        private readonly CapacityCalculatorOptions _calculatorOptions;
-        private readonly WaterMixerCalculator _waterMixerCalculator;
+        _cylinderTemperatureSensors = cylinderTemperatureSensors;
+        _coldWaterInletSensor = coldWaterInletSensor;
+        _calculatorOptions = options.Value;
+        _waterMixerCalculator = waterMixerCalculator;
 
-        private decimal HotWaterPartitionVolumeLiters { get; init; }
-
-        public CapacityCalculator(
-            ICylinderTemperatureSensor cylinderTemperatureSensors, 
-            IColdWaterInletSensor coldWaterInletSensor, 
-            IOptions<CapacityCalculatorOptions> options,
-            WaterMixerCalculator waterMixerCalculator)
-        {
-            _cylinderTemperatureSensors = cylinderTemperatureSensors;
-            _coldWaterInletSensor = coldWaterInletSensor;
-            _calculatorOptions = options.Value;
-            _waterMixerCalculator = waterMixerCalculator;
-
-            HotWaterPartitionVolumeLiters = options.Value.TankCapacityLiters / cylinderTemperatureSensors.Sensors.Length;
-        }
-
-        public decimal Capacity =>
-            _cylinderTemperatureSensors
-            .Sensors
-            .Sum(
-                sensor => 
-                    _waterMixerCalculator
-                    .GetWarmWaterLiters(
-                        hotWaterTemp: sensor,
-                        hotWaterVolume: HotWaterPartitionVolumeLiters,
-                        coldWaterTemp: _coldWaterInletSensor.ColdWaterInletSensorCelsius,
-                        desiredTemp: _calculatorOptions.TargetOutletTemperature));
+        _hotWaterPartitionVolumeLiters = options.Value.TankCapacityLiters / options.Value.TankSensorCount;
     }
+
+    public async Task<decimal> GetCapacityAsync()
+    {
+        var sensors = await _cylinderTemperatureSensors.GetSensorsAsync();
+
+        var tasks = sensors.Select(GetPartitionWarmWaterLitersAsync);
+
+        await Task.WhenAll(tasks);
+
+        return tasks.Sum(task => task.Result);
+    }
+
+    private async Task<decimal> GetPartitionWarmWaterLitersAsync(decimal hotWaterTemp)
+    {
+        var coldWaterTemp = await _coldWaterInletSensor.GetColdWaterInletSensorCelsiusAsync();
+            
+        return 
+            _waterMixerCalculator
+            .GetWarmWaterLiters(
+                hotWaterTemp: hotWaterTemp,
+                hotWaterVolume: _hotWaterPartitionVolumeLiters,
+                coldWaterTemp: coldWaterTemp,
+                desiredTemp: _calculatorOptions.TargetOutletTemperature);
+    }            
 }

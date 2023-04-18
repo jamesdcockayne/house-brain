@@ -2,6 +2,6 @@
 
 public interface IGasInletTemperatureSensors
 {
-    decimal InletCelsius { get; }
-    decimal OutletCelsius { get; }
+    Task<decimal> GetFlowCelsiusAsync();
+    Task<decimal> GetReturnCelsiusAsync();
 }

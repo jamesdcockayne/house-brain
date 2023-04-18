@@ -3,6 +3,7 @@ using Service;
 using Moq;
 using Service.DhwCapacity;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace ServiceTests;
 
@@ -10,15 +11,15 @@ namespace ServiceTests;
 public class CapacityCalculatorTests
 {
     [TestMethod]
-    public void TestOnePartitionOfTank()
+    public async Task TestOnePartitionOfTank()
     {
         var cylinderTempSensorMock = new Mock<ICylinderTemperatureSensor>();
 
-        cylinderTempSensorMock.Setup(mock => mock.Sensors).Returns(new decimal[] { 0, 0, 0, 0, 100 });
+        cylinderTempSensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 0, 0, 0, 0, 100 });
 
         var inletSensorMock = new Mock<IColdWaterInletSensor>();
 
-        inletSensorMock.Setup(mock => mock.ColdWaterInletSensorCelsius).Returns(0);
+        inletSensorMock.Setup(mock => mock.GetColdWaterInletSensorCelsiusAsync()).ReturnsAsync(0);
 
         var optionsMock = new Mock<IOptions<CapacityCalculatorOptions>>();
 
@@ -34,19 +35,19 @@ public class CapacityCalculatorTests
         Assert
             .AreEqual(
                 expected: 40, // 1/5th of the tank is 20L. Inlet is 0c and tank is 100c
-                actual: calculator.Capacity);
+                actual: await calculator.GetCapacityAsync());
     }
 
     [TestMethod]
-    public void TestMultiPartitionOfTank()
+    public async Task TestMultiPartitionOfTank()
     {
         var cylinderTempSensorMock = new Mock<ICylinderTemperatureSensor>();
 
-        cylinderTempSensorMock.Setup(mock => mock.Sensors).Returns(new decimal[] { 0, 0, 0, 100, 100 });
+        cylinderTempSensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 0, 0, 0, 100, 100 });
 
         var inletSensorMock = new Mock<IColdWaterInletSensor>();
 
-        inletSensorMock.Setup(mock => mock.ColdWaterInletSensorCelsius).Returns(0);
+        inletSensorMock.Setup(mock => mock.GetColdWaterInletSensorCelsiusAsync()).ReturnsAsync(0);
 
         var optionsMock = new Mock<IOptions<CapacityCalculatorOptions>>();
 
@@ -62,6 +63,6 @@ public class CapacityCalculatorTests
         Assert
             .AreEqual(
                 expected: 80, // 2/5th of the tank is 40L. Inlet is 0c and tank is 100c
-                actual: calculator.Capacity);
+                actual: await calculator.GetCapacityAsync());
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Service.Gas;
+using System.Threading.Tasks;
 
 namespace ServiceTests;
 
@@ -9,54 +10,54 @@ public class IndirectHeatingIsSaturatedTesterTests
 {
 
     [TestMethod]
-    public void TestSimilarTempsAtLowTempIsFalse()
+    public async Task TestSimilarTempsAtLowTempIsFalse()
     {
         Mock<IGasInletTemperatureSensors> sensorMock = new Mock<IGasInletTemperatureSensors>();
 
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(10);
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(11);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(10);
+        sensorMock.Setup(mock => mock.GetReturnCelsiusAsync()).ReturnsAsync(11);
 
         var tester = new IndirectHeatingIsSaturatedTester(sensorMock.Object);
 
-        Assert.IsFalse(tester.GasHeatingInletAndOutletTempsAreSimilarAndHot());
+        Assert.IsFalse(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
     }
 
     [TestMethod]
-    public void TestSimilarTempsAtHighTempIsTrue()
+    public async Task TestSimilarTempsAtHighTempIsTrue()
     {
         Mock<IGasInletTemperatureSensors> sensorMock = new Mock<IGasInletTemperatureSensors>();
 
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(82);
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(84);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(82);
+        sensorMock.Setup(mock => mock.GetReturnCelsiusAsync()).ReturnsAsync(84);
 
         var tester = new IndirectHeatingIsSaturatedTester(sensorMock.Object);
 
-        Assert.IsFalse(tester.GasHeatingInletAndOutletTempsAreSimilarAndHot());
+        Assert.IsFalse(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
     }
 
     [TestMethod]
-    public void TestDisimilarTempsAtHighTempIsFalse()
+    public async Task TestDisimilarTempsAtHighTempIsFalse()
     {
         Mock<IGasInletTemperatureSensors> sensorMock = new Mock<IGasInletTemperatureSensors>();
 
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(84);
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(70);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(84);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(70);
 
         var tester = new IndirectHeatingIsSaturatedTester(sensorMock.Object);
 
-        Assert.IsFalse(tester.GasHeatingInletAndOutletTempsAreSimilarAndHot());
+        Assert.IsFalse(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
     }
 
     [TestMethod]
-    public void TestDisimilarTempsAtHighTempIsFalseWithBackwardsSensors()
+    public async Task TestDisimilarTempsAtHighTempIsFalseWithBackwardsSensors()
     {
         Mock<IGasInletTemperatureSensors> sensorMock = new Mock<IGasInletTemperatureSensors>();
 
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(70);
-        sensorMock.SetupGet(mock => mock.InletCelsius).Returns(84);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(70);
+        sensorMock.Setup(mock => mock.GetFlowCelsiusAsync()).ReturnsAsync(84);
 
         var tester = new IndirectHeatingIsSaturatedTester(sensorMock.Object);
 
-        Assert.IsFalse(tester.GasHeatingInletAndOutletTempsAreSimilarAndHot());
+        Assert.IsFalse(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
     }
 }

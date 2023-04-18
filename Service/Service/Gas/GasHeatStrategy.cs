@@ -43,5 +43,5 @@ public class GasHeatStrategy
         }
     }
 
-    private bool TankIsAtTemp(decimal targetTemp) => _cylinderSensors.Sensors.Last() >= targetTemp;
+    private bool TankIsAtTemp(decimal targetTemp) => _cylinderSensors.GetSensors.Last() >= targetTemp;
 }

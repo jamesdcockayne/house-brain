@@ -2,5 +2,5 @@
 
 public interface IColdWaterInletSensor
 {
-    decimal ColdWaterInletSensorCelsius { get; }
+    Task<decimal> GetColdWaterInletSensorCelsiusAsync();
 }
