@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Service;
@@ -15,7 +16,7 @@ namespace ServiceTests
         {
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync(CancellationToken.None)).Callback(() => { });
 
             return waiterMock;
         }
@@ -47,13 +48,13 @@ namespace ServiceTests
                     immersionRelay: relayMock.Object,
                     wait: waiterMock.Object);
 
-            await optimiser.OptimiseAsync();
+            await optimiser.OptimiseAsync(CancellationToken.None);
 
             // We should have switched to the bottom relay and waited once.
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { false });
 
-            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(CancellationToken.None), Times.Once());
         }
 
         [TestMethod]
@@ -76,7 +77,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync(CancellationToken.None)).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -84,11 +85,11 @@ namespace ServiceTests
                     immersionRelay: relayMock.Object,
                     wait: waiterMock.Object);
 
-            await optimiser.OptimiseAsync();
+            await optimiser.OptimiseAsync(CancellationToken.None);
 
             CollectionAssert.AreEqual(expected: args, actual: new bool[] { });
 
-            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(CancellationToken.None), Times.Once());
             
         }
 
@@ -114,7 +115,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync(CancellationToken.None)).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -122,9 +123,9 @@ namespace ServiceTests
                     immersionRelay: relayMock.Object,
                     wait: waiterMock.Object);
 
-            await optimiser.OptimiseAsync();
+            await optimiser.OptimiseAsync(CancellationToken.None);
 
-            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(CancellationToken.None), Times.Once());
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { true });
         }
@@ -152,7 +153,7 @@ namespace ServiceTests
 
             var waiterMock = new Mock<IWait>();
 
-            waiterMock.Setup(waiter => waiter.LongWaitAsync()).Callback(() => { });
+            waiterMock.Setup(waiter => waiter.LongWaitAsync(CancellationToken.None)).Callback(() => { });
 
             var optimiser =
                 new ImmersionOptimiser(
@@ -160,9 +161,9 @@ namespace ServiceTests
                     immersionRelay: relayMock.Object,
                     wait: waiterMock.Object);
 
-            await optimiser.OptimiseAsync();
+            await optimiser.OptimiseAsync(CancellationToken.None);
             
-            waiterMock.Verify(waiter => waiter.LongWaitAsync(), Times.Once());
+            waiterMock.Verify(waiter => waiter.LongWaitAsync(CancellationToken.None), Times.Once());
 
             CollectionAssert.AreEqual(expected: args, actual: new[] { true, false });
         }

@@ -20,6 +20,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<Service.DhwCapacity.CapacityCalculator>();
 
         services.AddHostedService<Service.Immersion.ImmersionOptimiserService>();
+        services.AddHostedService<Service.Gas.GasHeatSchedulerService>();
     })
     .Build();
 

@@ -15,7 +15,7 @@ internal class ImmersionOptimiserService : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await _optimiser.OptimiseAsync();
+            await _optimiser.OptimiseAsync(stoppingToken);
         }
     }
 }

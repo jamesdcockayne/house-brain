@@ -2,6 +2,6 @@
 
 public interface IWait
 {
-    Task LongWaitAsync();
-    Task ShortWaitAsync();
+    Task LongWaitAsync(CancellationToken token);
+    Task ShortWaitAsync(CancellationToken token);
 }

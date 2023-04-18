@@ -34,7 +34,7 @@ public class GasHeatStrategy
                 if (await TankIsAtTempAsync(targetTemp))
                     return;
 
-                await _wait.ShortWaitAsync();
+                await _wait.ShortWaitAsync(cancellationToken);
             }
         }
         finally

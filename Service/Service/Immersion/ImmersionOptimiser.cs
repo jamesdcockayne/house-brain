@@ -13,7 +13,7 @@ internal class ImmersionOptimiser
         _wait = wait;
     }
 
-    public async Task OptimiseAsync()
+    public async Task OptimiseAsync(CancellationToken cancellationToken)
     {
         // current flowing top        - leave it, and wait
         // current not flowing top    - try a lower element, if failed move back to upper element and wait
@@ -26,38 +26,38 @@ internal class ImmersionOptimiser
         {
             if (currentDetected)
             {
-                await _wait.LongWaitAsync();
+                await _wait.LongWaitAsync(cancellationToken);
             }
             else
             {
-                await TryImmersionAndWait(isTopElement: false);
+                await TryImmersionAndWait(isTopElement: false, cancellationToken);
             }
         }
         else
         {
             if (currentDetected)
             {
-                await TryImmersionAndWait(isTopElement: true);
+                await TryImmersionAndWait(isTopElement: true, cancellationToken);
             }
             else
             {
-                await _wait.LongWaitAsync();
+                await _wait.LongWaitAsync(cancellationToken);
             }
         } 
     }
 
-    private async Task TryImmersionAndWait(bool isTopElement)
+    private async Task TryImmersionAndWait(bool isTopElement, CancellationToken cancellationToken)
     {
         _immersionRelay.TopImmersionEnabled = isTopElement;
 
         if (_currentSensor.CurrentIsDetected)
         {
-            await _wait.LongWaitAsync();
+            await _wait.LongWaitAsync(cancellationToken);
             return;
         }
 
         _immersionRelay.TopImmersionEnabled = !isTopElement;
 
-        await _wait.LongWaitAsync();
+        await _wait.LongWaitAsync(cancellationToken);
     }
 }

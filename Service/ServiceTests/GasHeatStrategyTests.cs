@@ -58,7 +58,7 @@ public class GasHeatStrategyTests
 
         var waiterMock = new Mock<IWait>();
 
-        waiterMock.Setup(waiter => waiter.ShortWaitAsync()).Returns(async () => await Task.Delay(100));
+        waiterMock.Setup(waiter => waiter.ShortWaitAsync(It.IsAny<CancellationToken>())).Returns(async () => await Task.Delay(100));
 
         var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
 
@@ -91,7 +91,7 @@ public class GasHeatStrategyTests
 
         var waiterMock = new Mock<IWait>();
 
-        waiterMock.Setup(waiter => waiter.ShortWaitAsync()).Returns(async () => await Task.Delay(100));
+        waiterMock.Setup(waiter => waiter.ShortWaitAsync(It.IsAny<CancellationToken>())).Returns(async () => await Task.Delay(100));
 
         var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
 
