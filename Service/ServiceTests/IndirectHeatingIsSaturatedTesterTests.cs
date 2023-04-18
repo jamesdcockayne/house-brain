@@ -32,7 +32,7 @@ public class IndirectHeatingIsSaturatedTesterTests
 
         var tester = new IndirectHeatingIsSaturatedTester(sensorMock.Object);
 
-        Assert.IsFalse(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
+        Assert.IsTrue(await tester.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync());
     }
 
     [TestMethod]

@@ -24,14 +24,14 @@ public class GasHeatStrategy
                 throw new InvalidOperationException("This class is not designed to be multi threaded and the relay is already calling for heat. Stopping calling for heat and crashing.");
             }
 
-            if (TankIsAtTemp(targetTemp))
+            if (await TankIsAtTempAsync(targetTemp))
                 return;
 
             _heatCallRelay.CallForHeat = true;
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (TankIsAtTemp(targetTemp))
+                if (await TankIsAtTempAsync(targetTemp))
                     return;
 
                 await _wait.ShortWait();
@@ -43,5 +43,5 @@ public class GasHeatStrategy
         }
     }
 
-    private bool TankIsAtTemp(decimal targetTemp) => _cylinderSensors.GetSensors.Last() >= targetTemp;
+    private async Task<bool> TankIsAtTempAsync(decimal targetTemp) => (await _cylinderSensors.GetSensorsAsync()).Last() >= targetTemp;
 }

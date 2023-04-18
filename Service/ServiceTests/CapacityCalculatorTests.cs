@@ -23,7 +23,7 @@ public class CapacityCalculatorTests
 
         var optionsMock = new Mock<IOptions<CapacityCalculatorOptions>>();
 
-        optionsMock.Setup(mock => mock.Value).Returns(new CapacityCalculatorOptions { TargetOutletTemperature = 50, TankCapacityLiters = 100 });
+        optionsMock.Setup(mock => mock.Value).Returns(new CapacityCalculatorOptions { TargetOutletTemperature = 50, TankCapacityLiters = 100, TankSensorCount = 5 });
 
         var calculator =
             new CapacityCalculator(
@@ -51,7 +51,7 @@ public class CapacityCalculatorTests
 
         var optionsMock = new Mock<IOptions<CapacityCalculatorOptions>>();
 
-        optionsMock.Setup(mock => mock.Value).Returns(new CapacityCalculatorOptions { TargetOutletTemperature = 50, TankCapacityLiters = 100 });
+        optionsMock.Setup(mock => mock.Value).Returns(new CapacityCalculatorOptions { TargetOutletTemperature = 50, TankCapacityLiters = 100, TankSensorCount = 5 });
 
         var calculator =
             new CapacityCalculator(
