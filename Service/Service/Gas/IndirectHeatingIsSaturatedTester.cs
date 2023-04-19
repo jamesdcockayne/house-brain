@@ -1,6 +1,6 @@
 ﻿namespace Service.Gas;
 
-public class IndirectHeatingIsSaturatedTester
+public class IndirectHeatingIsSaturatedTester : IIndirectHeatingIsSaturatedTester
 {
     private readonly IGasInletTemperatureSensors _gasSensor;
 

@@ -31,7 +31,17 @@ public class GasHeatStrategyTests
 
         var waiterMock = new Mock<IWait>();
 
-        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
+        var tempSaturationMock = new Mock<IIndirectHeatingIsSaturatedTester>();
+
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(false);
+
+        var gasHeat = new 
+            GasHeatStrategy(
+                relayMock.Object, 
+                sensorMock.Object, 
+                waiterMock.Object,
+                tempSaturationMock.Object,
+                new FakeLogger<GasHeatStrategy>());
 
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -58,9 +68,13 @@ public class GasHeatStrategyTests
 
         var waiterMock = new Mock<IWait>();
 
+        var tempSaturationMock = new Mock<IIndirectHeatingIsSaturatedTester>();
+
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(false);
+
         waiterMock.Setup(waiter => waiter.ShortWaitAsync(It.IsAny<CancellationToken>())).Returns(async () => await Task.Delay(100));
 
-        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
+        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object, tempSaturationMock.Object, new FakeLogger<GasHeatStrategy>());
 
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -91,9 +105,13 @@ public class GasHeatStrategyTests
 
         var waiterMock = new Mock<IWait>();
 
+        var tempSaturationMock = new Mock<IIndirectHeatingIsSaturatedTester>();
+
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(false);
+
         waiterMock.Setup(waiter => waiter.ShortWaitAsync(It.IsAny<CancellationToken>())).Returns(async () => await Task.Delay(100));
 
-        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
+        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object, tempSaturationMock.Object, new FakeLogger<GasHeatStrategy>());
 
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -115,6 +133,51 @@ public class GasHeatStrategyTests
     }
 
     [TestMethod]
+    public async Task TestCallForHeatIsUnsetOnceIfTheFlowAndReturnIsSaturated()
+    {
+        var relayMock = new Mock<IGasCallForHeatRelay>();
+
+        var args = new List<bool>();
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        relayMock.SetupSet(mock => mock.CallForHeat).Callback((bool enabled) => args.Add(enabled));
+#pragma warning restore CS0618 // Type or member is obsolete
+        relayMock.SetupGet(mock => mock.CallForHeat).Returns(() => args.LastOrDefault(defaultValue: false));
+
+        var sensorMock = new Mock<ICylinderTemperatureSensor>();
+
+        sensorMock.Setup(mock => mock.GetSensorsAsync()).ReturnsAsync(new decimal[] { 30, 30, 30, 30, 30 });
+
+        var waiterMock = new Mock<IWait>();
+
+        var tempSaturationMock = new Mock<IIndirectHeatingIsSaturatedTester>();
+
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(false);
+
+        waiterMock.Setup(waiter => waiter.ShortWaitAsync(It.IsAny<CancellationToken>())).Returns(async () => await Task.Delay(100));
+
+        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object, tempSaturationMock.Object, new FakeLogger<GasHeatStrategy>());
+
+        using CancellationTokenSource tokenSource = new CancellationTokenSource();
+
+        Task gasHeatTask = gasHeat.GasHeatAsync(targetTemp: 50, tokenSource.Token);
+
+        await Task.Delay(100); // Wait for GasHeatAsync to call for heat;
+
+        // So far we should just have a call for heat and the task should still be running because the tank is not warm enough.
+        //Assert.AreEqual(TaskStatus.Running, gasHeatTask.Status); 
+
+        CollectionAssert.AreEqual(expected: args, actual: new[] { true });
+
+        // Now make the flow and returns similar and hot and wait for the task to finish. The call for heat should be unset.
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(true);
+
+        await gasHeatTask;
+
+        CollectionAssert.AreEqual(expected: args, actual: new[] { true, false });
+    }
+
+    [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]
     public async Task TestExceptionIsThrownIfCallForHeatWasAlreadyInPlace()
     {
@@ -127,8 +190,11 @@ public class GasHeatStrategyTests
         var sensorMock = new Mock<ICylinderTemperatureSensor>();
         var waiterMock = new Mock<IWait>();
 
- 
-        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object);
+        var tempSaturationMock = new Mock<IIndirectHeatingIsSaturatedTester>();
+
+        tempSaturationMock.Setup(mock => mock.GasHeatingInletAndOutletTempsAreSimilarAndHotAsync()).ReturnsAsync(false);
+
+        var gasHeat = new GasHeatStrategy(relayMock.Object, sensorMock.Object, waiterMock.Object, tempSaturationMock.Object, new FakeLogger<GasHeatStrategy>());
 
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
 

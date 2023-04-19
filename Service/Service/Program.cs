@@ -37,6 +37,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<Service.Gas.GasHeatStrategy>();
         services.AddTransient<Service.DhwCapacity.WaterMixerCalculator>();
         services.AddTransient<Service.DhwCapacity.CapacityCalculator>();
+        services.AddTransient<Service.Gas.IIndirectHeatingIsSaturatedTester, Service.Gas.IndirectHeatingIsSaturatedTester>();
 
         services.AddHostedService<Service.Immersion.ImmersionOptimiserService>();
         services.AddHostedService<Service.Gas.GasHeatSchedulerService>();

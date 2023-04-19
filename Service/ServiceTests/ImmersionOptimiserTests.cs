@@ -46,7 +46,8 @@ namespace ServiceTests
                 new ImmersionOptimiser(
                     currentSensor: currentSensorMock.Object,
                     immersionRelay: relayMock.Object,
-                    wait: waiterMock.Object);
+                    wait: waiterMock.Object,
+                    logger: new FakeLogger<ImmersionOptimiser>());
 
             await optimiser.OptimiseAsync(CancellationToken.None);
 
@@ -83,7 +84,8 @@ namespace ServiceTests
                 new ImmersionOptimiser(
                     currentSensor: currentSensorMock.Object,
                     immersionRelay: relayMock.Object,
-                    wait: waiterMock.Object);
+                    wait: waiterMock.Object,
+                    logger: new FakeLogger<ImmersionOptimiser>());
 
             await optimiser.OptimiseAsync(CancellationToken.None);
 
@@ -121,7 +123,8 @@ namespace ServiceTests
                 new ImmersionOptimiser(
                     currentSensor: currentSensorMock.Object,
                     immersionRelay: relayMock.Object,
-                    wait: waiterMock.Object);
+                    wait: waiterMock.Object,
+                    logger: new FakeLogger<ImmersionOptimiser>());
 
             await optimiser.OptimiseAsync(CancellationToken.None);
 
@@ -159,7 +162,8 @@ namespace ServiceTests
                 new ImmersionOptimiser(
                     currentSensor: currentSensorMock.Object,
                     immersionRelay: relayMock.Object,
-                    wait: waiterMock.Object);
+                    wait: waiterMock.Object,
+                    logger: new FakeLogger<ImmersionOptimiser>());
 
             await optimiser.OptimiseAsync(CancellationToken.None);
             
