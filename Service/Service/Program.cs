@@ -26,9 +26,9 @@ using IHost host = Host.CreateDefaultBuilder(args)
         }
 
         services.AddSingleton<TemperatureSensorReader>();
-        services.AddSingleton<ICylinderTemperatureSensor>(x => x.GetRequiredService<TemperatureSensorReader>());
-        services.AddSingleton<Service.Gas.IGasInletTemperatureSensors>(x => x.GetRequiredService<TemperatureSensorReader>());
-        services.AddSingleton<Service.DhwCapacity.IColdWaterInletSensor>(x => x.GetRequiredService<TemperatureSensorReader>());
+        services.AddSingleton<ICylinderTemperatureSensor>(serviceProvider => serviceProvider.GetRequiredService<TemperatureSensorReader>());
+        services.AddSingleton<Service.Gas.IGasInletTemperatureSensors>(serviceProvider => serviceProvider.GetRequiredService<TemperatureSensorReader>());
+        services.AddSingleton<Service.DhwCapacity.IColdWaterInletSensor>(serviceProvider => serviceProvider.GetRequiredService<TemperatureSensorReader>());
         services.AddSingleton<Service.Immersion.ICurrentSensor, Service.Immersion.CurrentSensor>();
 
         services.AddTransient<IWait, Waiter>();
@@ -42,6 +42,10 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<Service.Gas.GasHeatSchedulerService>();
 
         services.AddOptions<WiringPinOptions>().BindConfiguration("Wiring").ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<Service.DhwCapacity.CapacityCalculatorOptions>().BindConfiguration("Tank").ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<Service.Gas.GasHeatingOptions>().BindConfiguration("GasHeating").ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<Service.TemperatureSensorOptions>().BindConfiguration("TemperatureSensors").ValidateDataAnnotations().ValidateOnStart();
+
     })
     .UseConsoleLifetime()
     .Build();

@@ -2,7 +2,7 @@
 
 namespace Service.Gas;
 
-internal class GasHeatingOptions
+public class GasHeatingOptions
 {
     [Range(10, 100)]
     public int TargetTemperature { get; set; }
