@@ -6,12 +6,16 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0.408-bullseye-slim-arm64v8 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore --runtime linux-arm64
-RUN dotnet build --runtime linux-arm64
-RUN dotnet test --runtime linux-arm64
+RUN dotnet restore Service/Service.csproj --runtime linux-arm64
+RUN dotnet restore ServiceTests/ServiceTests.csproj --runtime linux-arm64
+
+RUN dotnet build Service/Service.csproj --runtime linux-arm64 --no-self-contained
+RUN dotnet build ServiceTests/ServiceTests.csproj
+
+RUN dotnet test ServiceTests/ServiceTests.csproj 
 
 FROM build AS publish
-RUN dotnet publish --runtime linux-arm64 -c Release -o /app/publish
+RUN dotnet publish --runtime linux-arm64 --no-self-contained -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
