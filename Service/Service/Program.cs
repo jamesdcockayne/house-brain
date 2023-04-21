@@ -14,6 +14,8 @@ using IHost host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((host, services) =>
     {
+        bool hardwareTestMode = args.Any(a => a.Equals("--test-sensors", StringComparison.InvariantCultureIgnoreCase));
+
         if (host.HostingEnvironment.IsDevelopment())
         {
             services.AddTransient<Service.Immersion.IImmersionRelay, Service.Immersion.FakeImmersionRelay>();
@@ -39,8 +41,15 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<Service.DhwCapacity.CapacityCalculator>();
         services.AddTransient<Service.Gas.IIndirectHeatingIsSaturatedTester, Service.Gas.IndirectHeatingIsSaturatedTester>();
 
-        services.AddHostedService<Service.Immersion.ImmersionOptimiserService>();
-        services.AddHostedService<Service.Gas.GasHeatSchedulerService>();
+        if (hardwareTestMode)
+        {
+            services.AddHostedService<Service.HardwareTesterService>();
+        }
+        else
+        {
+            services.AddHostedService<Service.Immersion.ImmersionOptimiserService>();
+            services.AddHostedService<Service.Gas.GasHeatSchedulerService>();
+        }
 
         services.AddOptions<WiringPinOptions>().BindConfiguration("Wiring").ValidateDataAnnotations().ValidateOnStart();
         services.AddOptions<Service.DhwCapacity.CapacityCalculatorOptions>().BindConfiguration("Tank").ValidateDataAnnotations().ValidateOnStart();

@@ -2,6 +2,7 @@
   "profiles": {
     "Service": {
       "commandName": "Project",
+      "commandLineArgs": "--test-sensors",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }
