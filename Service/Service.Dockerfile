@@ -11,7 +11,7 @@ RUN dotnet build
 RUN dotnet test
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish --runtime linux-arm64 -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
