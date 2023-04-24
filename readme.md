@@ -1,4 +1,4 @@
-[![Docker Image CI](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml/badge.svg)](https://github.com/jamesdcockayne/house-brain/actions/workflows/CI.yml)
+[![.NET](https://github.com/jamesdcockayne/house-brain/actions/workflows/dotnet.yml/badge.svg)](https://github.com/jamesdcockayne/house-brain/actions/workflows/dotnet.yml)
 
 # House Brain
 
