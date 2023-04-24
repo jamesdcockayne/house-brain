@@ -4,4 +4,4 @@ echo "Running House Brain"
 
 chmod a+x ./Service
 
-./Service
+exec ./Service
