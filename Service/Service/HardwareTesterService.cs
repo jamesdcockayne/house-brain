@@ -27,10 +27,15 @@ internal class HardwareTesterService : BackgroundService
         _logger.LogInformation("Starting hardware test mode.");
 
         // Start the temp sensor loop.
-        _ = Task.Run(() => _temperatureSensorReader.MonitorSensorsAsync(stoppingToken), stoppingToken);
+        var monitorTask = Task.Run(() => _temperatureSensorReader.MonitorSensorsAsync(stoppingToken), stoppingToken);
+
+        await Task.Delay(10000, stoppingToken); // Wait for some readings to come in.
 
         while (!stoppingToken.IsCancellationRequested)
         {
+            if (monitorTask.IsFaulted)
+                throw monitorTask.Exception;
+
             await _temperatureSensorReader.GetColdWaterInletSensorCelsiusAsync();
             await _temperatureSensorReader.GetFlowCelsiusAsync();
             await _temperatureSensorReader.GetReturnCelsiusAsync();
