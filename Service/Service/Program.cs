@@ -11,6 +11,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         IHostEnvironment env = hostingContext.HostingEnvironment;
 
         configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        configuration.AddEnvironmentVariables();
     })
     .ConfigureServices((host, services) =>
     {
