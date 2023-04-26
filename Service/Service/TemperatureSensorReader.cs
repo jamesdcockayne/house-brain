@@ -52,7 +52,7 @@ public class TemperatureSensorReader : ICylinderTemperatureSensor, Gas.IGasInlet
         foreach (var sensorId in _options.TankSensorIds!)
             readings.Add(await GetLastReadingAsync(sensorId));
 
-        _logger.LogDebug("Tank temp (top to bottom) {}", string.Join(", ", readings.Cast<int>()));
+        _logger.LogDebug("Tank temp (top to bottom) {}", string.Join(", ", readings));
 
         return readings.ToArray();
     }
