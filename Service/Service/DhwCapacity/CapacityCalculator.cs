@@ -28,7 +28,7 @@ public class CapacityCalculator
     {
         var sensors = await _cylinderTemperatureSensors.GetSensorsAsync();
 
-        var tasks = sensors.Select(GetPartitionWarmWaterLitersAsync);
+        var tasks = sensors.Select(GetPartitionWarmWaterLitersAsync).ToList();
 
         await Task.WhenAll(tasks);
 
