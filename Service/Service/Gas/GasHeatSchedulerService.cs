@@ -21,7 +21,7 @@ internal class GasHeatSchedulerService : BackgroundService
     {
         _logger.LogInformation("Starting");
 
-        await WaitUntilTommrowMorningAsync(stoppingToken);
+        await WaitUntilTomorrowMorningAsync(stoppingToken);
 
         using PeriodicTimer timer = new(TimeSpan.FromDays(1));
 
@@ -57,7 +57,7 @@ internal class GasHeatSchedulerService : BackgroundService
         }
     }
 
-    private async Task WaitUntilTommrowMorningAsync(CancellationToken stoppingToken)
+    private async Task WaitUntilTomorrowMorningAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Waiting until early morning.");
 
